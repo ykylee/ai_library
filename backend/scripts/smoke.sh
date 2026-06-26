@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# ai_library backend smoke test (M-v0.0.2-a foundation)
+# ai_library backend smoke test (M-v0.0.2-b)
 # 8 smoke test (standalone 운영 검증)
 #
 # auto-starts FastAPI dev server in background (if not running), runs checks, kills at end.
@@ -71,14 +71,14 @@ check "version CLI (typer)" "python -m src.main version"
 # 3) GET /api/v1/health/protected with Path Y header — caller-provided user context 검증
 check "Path Y protected health" "python ${SCRIPT_DIR}/smoke_path_y.py"
 
-# 4) OKF envelope (make_envelope placeholder)
-check "OKF envelope (make_envelope)" "python -c 'from src.okf.envelope import make_envelope; from pathlib import Path; e = make_envelope(\"smoke-test\", \"smoke\", Path(\"var\")); assert e.bundle_name == \"smoke-test\"'"
+# 4) GET /api/v1/ingest/statuses — 5종 source list
+check "GET /api/v1/ingest/statuses" "python ${SCRIPT_DIR}/smoke_ingest_statuses.py"
 
-# 5) config loader (4-priority chain)
-check "config load_config" "python -c 'from src.config import load_config; c = load_config(); assert c.repo_root.exists()'"
+# 5) POST /api/v1/ingest/mock/sync?dry_run=true — mock source sync
+check "POST /api/v1/ingest/mock/sync" "python ${SCRIPT_DIR}/smoke_ingest_sync.py"
 
-# 6) source plugin base abstract (instantiation ❌ — abstract class guard)
-check "SourcePlugin abstract guard" "python -c 'from src.sources.base import SourcePlugin; print(\"SourcePlugin is abstract\")'"
+# 6) bundles cycle (create + get + rebuild)
+check "bundles cycle" "python ${SCRIPT_DIR}/smoke_bundles_cycle.py"
 
 # 7) var/ 디렉터리 (raw / concepts / cross-link / audit)
 check "var/ subdirs present" "test -d var/raw && test -d var/concepts && test -d var/cross-link && test -d var/audit"
@@ -94,4 +94,4 @@ if [[ $FAIL -gt 0 ]]; then
     exit 1
 fi
 
-echo "[smoke.sh] OK — M-v0.0.2-a smoke test passed"
+echo "[smoke.sh] OK — M-v0.0.2-b smoke test passed"

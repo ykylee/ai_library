@@ -20,7 +20,7 @@ classifiers = [
 ]
 
 dependencies = [
-    "fastapi>=0.115.0",
+    "fastapi>=0.115.0,<0.120.0",  # 0.120+ 의 include_router prefix propagation 버그 회피
     "uvicorn[standard]>=0.30.0",
     "pydantic>=2.7.0",
     "pydantic-settings>=2.4.0",

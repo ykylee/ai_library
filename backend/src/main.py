@@ -19,6 +19,7 @@ from fastapi import FastAPI
 from . import __version__
 from .api import install_middleware, install_root_routers
 from .api.v1 import api_v1_router
+from .storage import ensure_var_subdirs
 from .config import detect_repo_root, load_config
 
 logger = logging.getLogger("ai_library")
@@ -40,6 +41,11 @@ def create_app() -> FastAPI:
     )
     install_middleware(app)
     install_root_routers(app)
+
+    # ensure var/ canonical subdirs (M-v0.0.2-b)
+    config = load_config()
+    ensure_var_subdirs(config.var_dir)
+
     app.include_router(api_v1_router)
     return app
 
