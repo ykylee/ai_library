@@ -12,7 +12,7 @@ def main() -> int:
     with urllib.request.urlopen(f"{base_url}/health") as r:
         d = json.loads(r.read())
         assert d["data"]["status"] == "ok", f"status != ok: {d}"
-        assert d["envelope"]["api_version"] == "v0-2", f"api_version: {d}"
+        assert d["envelope"]["api_version"] == "v1", f"api_version: {d}"
     return 0
 
 

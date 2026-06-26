@@ -18,7 +18,7 @@ from fastapi import FastAPI
 
 from . import __version__
 from .api import install_middleware, install_root_routers
-from .api.v0_2 import api_v0_2_router
+from .api.v1 import api_v1_router
 from .config import detect_repo_root, load_config
 
 logger = logging.getLogger("ai_library")
@@ -31,7 +31,7 @@ def create_app() -> FastAPI:
     등록 순서:
     1. envelope middleware (request.state.envelope 주입)
     2. error handler (ApiError → JSONResponse)
-    3. /api/v0-2/ router aggregator (M-v0.0.2-a: health, M-v0.0.2-b: ingest/bundles, M-v0.0.2-c: concepts/raw/audit/graph)
+    3. /api/v1/ router aggregator (M-v0.0.2-a: health, M-v0.0.2-b: ingest/bundles, M-v0.0.2-c: concepts/raw/audit/graph)
     """
     app = FastAPI(
         title="ai_library backend",
@@ -40,7 +40,7 @@ def create_app() -> FastAPI:
     )
     install_middleware(app)
     install_root_routers(app)
-    app.include_router(api_v0_2_router)
+    app.include_router(api_v1_router)
     return app
 
 

@@ -34,7 +34,7 @@ class TestPublicHealth:
     def test_envelope_meta_fields(self, client: TestClient) -> None:
         res = client.get("/health")
         meta = res.json()["envelope"]
-        assert meta["api_version"] == "v0-2"
+        assert meta["api_version"] == "v1"
         assert "request_id" in meta
         assert "timestamp" in meta
         assert meta["caller_user_id"] is None
@@ -48,10 +48,10 @@ class TestPublicHealth:
 
 
 class TestProtectedHealth:
-    """GET /api/v0-2/health/protected — Path Y protected."""
+    """GET /api/v1/health/protected — Path Y protected."""
 
     def test_without_path_y_returns_200(self, client: TestClient) -> None:
-        res = client.get("/api/v0-2/health/protected")
+        res = client.get("/api/v1/health/protected")
         assert res.status_code == 200
         body = res.json()
         assert body["data"]["path_y_validated"] is False
@@ -71,7 +71,7 @@ class TestProtectedHealth:
         raw = json.dumps(ctx).encode("utf-8")
         encoded = base64.urlsafe_b64encode(raw).rstrip(b"=").decode("ascii")
         res = client.get(
-            "/api/v0-2/health/protected",
+            "/api/v1/health/protected",
             headers={"X-AiLibrary-User-Context": encoded},
         )
         assert res.status_code == 200
@@ -84,7 +84,7 @@ class TestProtectedHealth:
 
     def test_with_invalid_path_y_falls_back(self, client: TestClient) -> None:
         res = client.get(
-            "/api/v0-2/health/protected",
+            "/api/v1/health/protected",
             headers={"X-AiLibrary-User-Context": "!!!invalid!!!"},
         )
         assert res.status_code == 200

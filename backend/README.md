@@ -20,7 +20,7 @@ backend/
 ├── src/
 │   ├── main.py                # FastAPI app entry + typer CLI
 │   ├── api/
-│   │   └── v0_2/              # /api/v0-2/ endpoint (6 router, 17 endpoint placeholder)
+│   │   └── v1/              # /api/v1/ endpoint (6 router, 17 endpoint placeholder)
 │   │       ├── ingest.py      # POST /ingest/{source}/pull + GET /ingest/statuses
 │   │       ├── bundles.py     # GET /bundles/{name} + GET /bundles + POST /bundles/{name}/rebuild
 │   │       ├── concepts.py    # GET /concepts + GET /concepts/{type}/{name}
@@ -80,7 +80,7 @@ bash scripts/smoke.sh
 - Network: 3 단계 (dev 사외 / staging 사내 / production 사내)
 - Storage: file-based + DB-based 듀얼 모드 (M-v0.0.2+ default file-based, M-v0.0.4+ DB 옵션)
 - Audit: governance audit log 정공법 정합
-- API versioning: §16 정책 (M-v0.0.2+ `/api/v0-2/` prefix, M-v0.0.6+ `/api/v0-3/` dual endpoint, 12개월 deprecation policy)
+- API versioning: §16 정책 (M-v0.0.2+ `/api/v1/` prefix, M-v0.0.6+ `/api/v2/` dual endpoint, 12개월 deprecation policy)
 
 ## Tier
 

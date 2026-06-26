@@ -129,7 +129,7 @@ export interface AuditEvent {
 export interface EnvelopeMeta {
 	request_id: string;
 	timestamp: string;
-	api_version: 'v0-2';
+	api_version: 'v1';
 	caller_user_id: string | null;
 	path_y_validated: boolean;
 }

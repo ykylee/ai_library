@@ -5,10 +5,10 @@
 - `errors.py`   : ApiError + register_error_handlers
 - `path_y.py`   : Path Y user context (ADR-0001 §2.3 standalone 정책)
 - `middleware.py`: HTTP middleware + Depends helpers
-- `v0_2/`      : /api/v0-2/ routers (M-v0.0.2+ 부터 6 router 등록, 17 endpoint)
+- `v1/`      : /api/v1/ routers (M-v0.0.2+ 부터 6 router 등록, 17 endpoint)
 - `v0_3/`      : M-v0.0.6+ 부터 도입 예정 (deprecation policy)
 
-M-v0.0.2-a (foundation) = envelope + errors + path_y + middleware + v0_2/health
+M-v0.0.2-a (foundation) = envelope + errors + path_y + middleware + v1/health
 """
 from __future__ import annotations
 
@@ -16,7 +16,7 @@ from fastapi import FastAPI
 
 from .errors import register_error_handlers
 from .middleware import attach_envelope_middleware
-from .v0_2.health import root_router as health_root_router
+from .v1.health import root_router as health_root_router
 
 
 def install_middleware(app: FastAPI) -> None:

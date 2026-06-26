@@ -68,7 +68,7 @@ check "GET /health envelope" "python ${SCRIPT_DIR}/smoke_health.py"
 # 2) version CLI (typer)
 check "version CLI (typer)" "python -m src.main version"
 
-# 3) GET /api/v0-2/health/protected with Path Y header — caller-provided user context 검증
+# 3) GET /api/v1/health/protected with Path Y header — caller-provided user context 검증
 check "Path Y protected health" "python ${SCRIPT_DIR}/smoke_path_y.py"
 
 # 4) OKF envelope (make_envelope placeholder)

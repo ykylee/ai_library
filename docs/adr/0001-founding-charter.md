@@ -66,9 +66,9 @@
 
 ### 2.6 API versioning 정책
 
-- 시작 = `/api/v0-2/` prefix (FURL-stable path)
-- dual endpoint 운영 = `/api/v0-2/` + `/api/v0-3/` 동시 운영 (M-v0.0.5+ 도입)
-- 12개월 deprecation policy: 신규 endpoint 는 `v0-3/` 부터, `v0-2/` 는 12개월 후 제거
+- 시작 = `/api/v1/` prefix (FURL-stable path)
+- dual endpoint 운영 = `/api/v1/` + `/api/v2/` 동시 운영 (M-v0.0.5+ 도입)
+- 12개월 deprecation policy: 신규 endpoint 는 `v2/` 부터, `v1/` 는 12개월 후 제거
 
 ### 2.7 Source plugin 정책
 
@@ -120,7 +120,7 @@ ai_library/
 │   ├── src/
 │   │   ├── main.py                    # FastAPI app factory + typer CLI
 │   │   ├── config.py                  # 4-priority REPO_ROOT auto-detect
-│   │   ├── api/v0_2/                  # /api/v0-2/ routers (ingest / bundles / concepts / raw / audit / graph)
+│   │   ├── api/v1/                    # /api/v1/ routers (ingest / bundles / concepts / raw / audit / graph)
 │   │   ├── sources/                   # SourcePlugin ABC + 5종 plugin
 │   │   ├── okf/                       # OKF bundle engine + envelope + frontmatter
 │   │   └── llm/                       # Pi LLM enrich placeholder
@@ -140,7 +140,7 @@ cd web && npm ci && npm run dev            # http://localhost:5173
 
 # Backend
 cd backend && pip install -e . && ai-library serve    # http://localhost:8000
-curl http://localhost:8000/api/v0-2/health
+curl http://localhost:8000/api/v1/health
 
 # Smoke test
 cd backend && bash scripts/smoke.sh        # 8 smoke test (M-v0.0.1-alpha)

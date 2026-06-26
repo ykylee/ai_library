@@ -113,14 +113,14 @@ describe('api.syncSource', () => {
 		vi.restoreAllMocks();
 	});
 
-	it('sends POST to /api/v0-2/ingest/{source}/sync', async () => {
+	it('sends POST to /api/v1/ingest/{source}/sync', async () => {
 		const fetchSpy = mockFetchOnce({
 			status: 200,
 			body: { data: { synced: 3, failed: 0, raw_ids: [], errors: [] }, request_id: 'req' }
 		});
 		await api.syncSource('mock');
 		const url = fetchSpy.mock.calls[0]?.[0] as string;
-		expect(url).toContain('/api/v0-2/ingest/mock/sync');
+		expect(url).toContain('/api/v1/ingest/mock/sync');
 		expect(url).toContain('dry_run=false');
 	});
 
@@ -160,7 +160,7 @@ describe('api.listConcepts', () => {
 		});
 		await api.listConcepts();
 		const url = fetchSpy.mock.calls[0]?.[0] as string;
-		expect(url).toContain('/api/v0-2/search?');
+		expect(url).toContain('/api/v1/search?');
 	});
 });
 
@@ -224,7 +224,7 @@ describe('api.deleteRaw', () => {
 		});
 		await api.deleteRaw('abc/1234+foo');
 		const url = fetchSpy.mock.calls[0]?.[0] as string;
-		expect(url).toContain('/api/v0-2/raw/');
+		expect(url).toContain('/api/v1/raw/');
 		expect(url).not.toContain('abc/1234+foo');
 		expect(decodeURIComponent(url)).toContain('abc/1234+foo');
 	});

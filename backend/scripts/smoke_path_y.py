@@ -1,4 +1,4 @@
-"""Smoke check #3: GET /api/v0-2/health/protected with valid Path Y header.
+"""Smoke check #3: GET /api/v1/health/protected with valid Path Y header.
 
 Standalone script (smoke.sh 에서 호출) — quoting 회피.
 """
@@ -26,7 +26,7 @@ def main() -> int:
     raw = json.dumps(ctx).encode("utf-8")
     encoded = base64.urlsafe_b64encode(raw).rstrip(b"=").decode("ascii")
     req = urllib.request.Request(
-        f"{base_url}/api/v0-2/health/protected",
+        f"{base_url}/api/v1/health/protected",
         headers={"X-AiLibrary-User-Context": encoded},
     )
     with urllib.request.urlopen(req) as r:

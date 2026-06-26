@@ -4,8 +4,8 @@
 	import { ApiError, api, withStoredPathY } from '$lib/api';
 	import type { BundleDetail, Concept } from '$lib/types';
 
-	// M-v0.2.1+ scope: backend GET /api/v0-2/bundles/{name} 가 concepts array 미포함 (단일 metadata).
-	// concepts list 는 backend GET /api/v0-2/bundles/{name}/concepts 별도 endpoint (PR #662) 추가 시 load.
+	// M-v0.2.1+ scope: backend GET /api/v1/bundles/{name} 가 concepts array 미포함 (단일 metadata).
+	// concepts list 는 backend GET /api/v1/bundles/{name}/concepts 별도 endpoint (PR #662) 추가 시 load.
 	let bundle = $state<BundleDetail | null>(null);
 	let concepts = $state<Concept[] | null>(null);
 	let loading = $state(true);

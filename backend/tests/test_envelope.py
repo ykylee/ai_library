@@ -108,7 +108,7 @@ class TestEnvelopeContext:
         assert isinstance(meta, EnvelopeMeta)
         assert meta.caller_user_id == "u_001"
         assert meta.path_y_validated is True
-        assert meta.api_version == "v0-2"
+        assert meta.api_version == "v1"
 
     def test_meta_without_path_y(self) -> None:
         ctx = EnvelopeContext.new(path_y=None)
@@ -121,7 +121,7 @@ class TestEnvelopeContext:
         wrapped = ctx.wrap({"foo": "bar"})
         assert "envelope" in wrapped
         assert wrapped["data"] == {"foo": "bar"}
-        assert wrapped["envelope"]["api_version"] == "v0-2"
+        assert wrapped["envelope"]["api_version"] == "v1"
 
     def test_wrap_with_list_data(self) -> None:
         ctx = EnvelopeContext.new(path_y=None)
@@ -136,7 +136,7 @@ class TestEnvelopeModel:
         meta = EnvelopeMeta(
             request_id="req_001",
             timestamp="2026-06-26T00:00:00Z",
-            api_version="v0-2",
+            api_version="v1",
             caller_user_id=None,
             path_y_validated=False,
         )
@@ -150,4 +150,4 @@ class TestEnvelopeModel:
             request_id="req_001",
             timestamp="2026-06-26T00:00:00Z",
         )
-        assert meta.api_version == "v0-2"
+        assert meta.api_version == "v1"

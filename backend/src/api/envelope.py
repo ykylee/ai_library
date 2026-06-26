@@ -7,7 +7,7 @@ endpoint 가 `EnvelopeContext.wrap(data)` 호출하여 최종 JSON 반환.
 web frontend 호환 (types.ts Envelope / EnvelopeMeta 1:1):
 - envelope.request_id : UUID4 string
 - envelope.timestamp : ISO 8601
-- envelope.api_version : "v0-2"
+- envelope.api_version : "v1"
 - envelope.caller_user_id : string | null  (Path Y 의 user_id 또는 null)
 - envelope.path_y_validated : boolean  (Path Y header 가 정상 decode 됐는지)
 """
@@ -27,7 +27,7 @@ class EnvelopeMeta(BaseModel):
 
     request_id: str
     timestamp: str
-    api_version: str = "v0-2"
+    api_version: str = "v1"
     caller_user_id: str | None = None
     path_y_validated: bool = False
 
@@ -66,7 +66,7 @@ class EnvelopeContext:
         return EnvelopeMeta(
             request_id=self.request_id,
             timestamp=self.timestamp,
-            api_version="v0-2",
+            api_version="v1",
             caller_user_id=self.path_y.user_id if self.path_y else None,
             path_y_validated=self.path_y is not None,
         )

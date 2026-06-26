@@ -1,8 +1,8 @@
 """Health endpoints (M-v0.0.2-a foundation).
 
 Two routers:
-- root_router : GET /health                  (root-level, no /api/v0-2 prefix)
-- protected_router : GET /api/v0-2/health/protected  (v0-2 router aggregator 가 include)
+- root_router : GET /health                  (root-level, no /api/v1 prefix)
+- protected_router : GET /api/v1/health/protected  (v1 router aggregator 가 include)
 
 두 endpoint 모두 envelope middleware 적용.
 """
@@ -18,7 +18,7 @@ from ..path_y import PathYUserContext
 # Root-level router (no prefix) — registered at app level in api/__init__.py
 root_router = APIRouter(tags=["health"])
 
-# v0-2-prefixed router — registered in api/v0_2/__init__.py
+# v1-prefixed router — registered in api/v1/__init__.py
 protected_router = APIRouter(tags=["health"])
 
 

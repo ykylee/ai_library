@@ -77,10 +77,10 @@ export const api = {
 			org_id: string;
 			roles: string[];
 			project_ids: string[];
-		}>('/api/v0-2/health/protected', 'GET', opts),
+		}>('/api/v1/health/protected', 'GET', opts),
 
 	listSources: (opts: ApiOptions = {}) =>
-		request<IngestStatusListData>('/api/v0-2/ingest/statuses', 'GET', opts),
+		request<IngestStatusListData>('/api/v1/ingest/statuses', 'GET', opts),
 
 	syncSource: (source: string, opts: ApiOptions = {}, dryRun = false) =>
 		request<{
@@ -88,10 +88,10 @@ export const api = {
 			failed: number;
 			raw_ids: string[];
 			errors: Array<{ raw_name: string; code: string; message: string }>;
-		}>(`/api/v0-2/ingest/${source}/sync?dry_run=${dryRun}`, 'POST', opts),
+		}>(`/api/v1/ingest/${source}/sync?dry_run=${dryRun}`, 'POST', opts),
 
 	pullSource: (source: string, opts: ApiOptions = {}) =>
-		request<IngestPullData>(`/api/v0-2/ingest/${source}/pull`, 'POST', opts),
+		request<IngestPullData>(`/api/v1/ingest/${source}/pull`, 'POST', opts),
 
 	listConcepts: (params: { q?: string; bundle?: string; type?: string; limit?: number } = {}, opts: ApiOptions = {}) => {
 		const search = new URLSearchParams();
@@ -108,7 +108,7 @@ export const api = {
 			bundle: string;
 			source: string;
 		}>; total: number; next_offset: number | null }>(
-			`/api/v0-2/search?${search.toString()}`,
+			`/api/v1/search?${search.toString()}`,
 			'GET',
 			opts
 		);
@@ -116,22 +116,22 @@ export const api = {
 
 	getConcept: (bundle: string, type: string, name: string, opts: ApiOptions = {}) =>
 		request<Concept>(
-			`/api/v0-2/concepts/${encodeURIComponent(type)}/${encodeURIComponent(name)}?bundle=${encodeURIComponent(bundle)}`,
+			`/api/v1/concepts/${encodeURIComponent(type)}/${encodeURIComponent(name)}?bundle=${encodeURIComponent(bundle)}`,
 			'GET',
 			opts
 		),
 
 	listBundles: (opts: ApiOptions = {}) =>
-		request<{ items: Bundle[]; total: number }>('/api/v0-2/bundles', 'GET', opts),
+		request<{ items: Bundle[]; total: number }>('/api/v1/bundles', 'GET', opts),
 
 	getBundle: (name: string, opts: ApiOptions = {}) =>
-		request<BundleDetail>(`/api/v0-2/bundles/${encodeURIComponent(name)}`, 'GET', opts),
+		request<BundleDetail>(`/api/v1/bundles/${encodeURIComponent(name)}`, 'GET', opts),
 
 	createBundle: (
 		body: { name: string; description?: string; owner_org_id: string; visibility: 'public' | 'org' | 'personal' | 'project' },
 		opts: ApiOptions = {}
 	) => request<{ name: string; created_at: string; created_by: string; visibility: string; path: string }>(
-		'/api/v0-2/bundles',
+		'/api/v1/bundles',
 		'POST',
 		opts,
 		body
@@ -147,14 +147,14 @@ export const api = {
 			viz_html_generated: boolean;
 			duration_ms: number;
 			rebuilt_at: string;
-		}>(`/api/v0-2/bundles/${bundle}/rebuild?dry_run=${dryRun}`, 'POST', opts),
+		}>(`/api/v1/bundles/${bundle}/rebuild?dry_run=${dryRun}`, 'POST', opts),
 
 	listRaw: (params: { source?: string; limit?: number } = {}, opts: ApiOptions = {}) => {
 		const search = new URLSearchParams();
 		if (params.source) search.set('source', params.source);
 		if (params.limit) search.set('limit', String(params.limit));
 		return request<{ items: RawRecord[]; total: number }>(
-			`/api/v0-2/raw?${search.toString()}`,
+			`/api/v1/raw?${search.toString()}`,
 			'GET',
 			opts
 		);
@@ -162,7 +162,7 @@ export const api = {
 
 	deleteRaw: (rawId: string, opts: ApiOptions = {}) =>
 		request<{ deleted: boolean; raw_id: string }>(
-			`/api/v0-2/raw/${encodeURIComponent(rawId)}`,
+			`/api/v1/raw/${encodeURIComponent(rawId)}`,
 			'DELETE',
 			opts
 		),
@@ -178,7 +178,7 @@ export const api = {
 		if (params.to) search.set('to', params.to);
 		if (params.limit) search.set('limit', String(params.limit));
 		return request<{ items: AuditEvent[]; total: number; filters: Record<string, unknown> }>(
-			`/api/v0-2/audit?${search.toString()}`,
+			`/api/v1/audit?${search.toString()}`,
 			'GET',
 			opts
 		);
@@ -196,7 +196,7 @@ export const api = {
 			}>;
 			total: number;
 			by_severity: { info: number; warning: number; critical: number };
-		}>('/api/v0-2/monitoring/alerts', 'GET', opts)
+		}>('/api/v1/monitoring/alerts', 'GET', opts)
 };
 
 export function withStoredPathY(opts: ApiOptions = {}): ApiOptions {

@@ -52,7 +52,7 @@ ai_library/
 │   │   ├── main.py                    # FastAPI app entry + typer CLI
 │   │   ├── config.py                  # 4-priority REPO_ROOT auto-detect
 │   │   ├── api/
-│   │   │   └── v0_2/                  # /api/v0-2/ 6 router placeholder
+│   │   │   └── v1/                    # /api/v1/ 6 router placeholder
 │   │   ├── sources/
 │   │   │   └── base.py                # SourcePlugin ABC
 │   │   ├── okf/
