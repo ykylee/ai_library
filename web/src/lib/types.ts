@@ -149,7 +149,7 @@ export interface ApiErrorBody {
 }
 
 export type SourceName =
-	| 'homelab_mock'
+	| 'mock'
 	| 'gitea_repo_pull'
 	| 'gitea_issue'
 	| 'gitea_wiki'
@@ -198,7 +198,7 @@ export interface BundleDetail {
 }
 
 export const SOURCES: SourceName[] = [
-	'homelab_mock',
+	'mock',
 	'gitea_repo_pull',
 	'gitea_issue',
 	'gitea_wiki',

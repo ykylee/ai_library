@@ -31,7 +31,7 @@ def create_app() -> FastAPI:
     app = FastAPI(
         title="ai_library backend",
         version=__version__,
-        description="AI Agent Library — OKF bundle engine + LLM enrich agents. 1차 출처: DevHub v0.2.0 backend-knowledge (2026-06-23 extraction).",
+        description="AI Agent Library — OKF bundle engine + LLM enrich agents.",
     )
     # M-v0.3.0+ router 등록 자리
     # from .api.v0_2 import ingest, bundles, concepts, raw, audit, graph

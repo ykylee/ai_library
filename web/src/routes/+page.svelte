@@ -44,7 +44,7 @@
 
 <header class="page-header">
 	<h1>Dashboard</h1>
-	<p>ai_library v0.3.0-alpha standalone (DevHub §1.2 G7 standalone 정책 흡수 + ADR-0038 extraction)</p>
+	<p>ai_library standalone OKF + LLM enrich agent — Path Y caller-provided user context (optional).</p>
 	<button type="button" onclick={load} disabled={loading}>{loading ? 'Loading...' : 'Refresh'}</button>
 </header>
 

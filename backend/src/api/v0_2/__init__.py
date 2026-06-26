@@ -1,6 +1,6 @@
 """ai_library backend — /api/v0-2/ routers.
 
-DevHub umbrella §3.1 API 매트릭스 정합 (17 endpoint):
+본 패키지의 6 router (17 endpoint):
 - ingest.py   : POST /ingest/{source}/pull + GET /ingest/statuses
 - bundles.py  : GET /bundles + GET /bundles/{name} + POST /bundles/{name}/rebuild
 - concepts.py : GET /concepts + GET /concepts/{type}/{name}

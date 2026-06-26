@@ -118,9 +118,9 @@ describe('api.syncSource', () => {
 			status: 200,
 			body: { data: { synced: 3, failed: 0, raw_ids: [], errors: [] }, request_id: 'req' }
 		});
-		await api.syncSource('homelab_mock');
+		await api.syncSource('mock');
 		const url = fetchSpy.mock.calls[0]?.[0] as string;
-		expect(url).toContain('/api/v0-2/ingest/homelab_mock/sync');
+		expect(url).toContain('/api/v0-2/ingest/mock/sync');
 		expect(url).toContain('dry_run=false');
 	});
 

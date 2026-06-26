@@ -13,7 +13,7 @@
 		error = null;
 		concept = null;
 
-		const bundle = $page.url.searchParams.get('bundle') ?? 'homelab-mock';
+		const bundle = $page.url.searchParams.get('bundle') ?? 'mock';
 		const type = $page.params.type ?? '';
 		const name = $page.params.name ?? '';
 

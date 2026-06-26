@@ -1,12 +1,10 @@
 """Source plugin abstract base (M-v0.3.0-alpha placeholder).
 
-DevHub umbrella §3.8 (SourceMeta) + §3.7 (data normalization pipeline) 정합.
-
 각 plugin 은 SourcePlugin 상속 + 4 method 구현:
 - meta() -> SourceMeta: source 식별 + body_template
 - pull() -> AsyncIterator[RawEntry]: 외부 시스템에서 1차 raw fetch
-- normalize(raw) -> NormalizedEntry: §3.7 normalization pipeline
-- health() -> HealthStatus: §3.7.6.5 auth failure monitoring
+- normalize(raw) -> NormalizedEntry: 정규화된 entry (8종 OKF type enum 중 1)
+- health() -> HealthStatus: source health + auth failure counter
 
 M-v0.3.0+ 부터 실제 구현.
 """
@@ -19,7 +17,7 @@ from typing import Any, AsyncIterator
 
 @dataclass(frozen=True)
 class SourceMeta:
-    """외부 시스템 source 메타 정보 (DevHub umbrella §3.8.1)."""
+    """외부 시스템 source 메타 정보."""
 
     name: str  # 예: "gitea_repo_pull"
     version: str  # 예: "0.3.0"
@@ -29,7 +27,7 @@ class SourceMeta:
 
 @dataclass(frozen=True)
 class RawEntry:
-    """1차 raw data entry (DevHub umbrella §3.8.2)."""
+    """1차 raw data entry."""
 
     source: str
     external_id: str
@@ -41,7 +39,7 @@ class RawEntry:
 
 @dataclass(frozen=True)
 class NormalizedEntry:
-    """정규화된 entry (DevHub umbrella §3.7.4)."""
+    """정규화된 entry."""
 
     source: str
     external_id: str
@@ -51,7 +49,7 @@ class NormalizedEntry:
 
 @dataclass(frozen=True)
 class HealthStatus:
-    """source plugin health (DevHub umbrella §3.7.6.5)."""
+    """source plugin health."""
 
     name: str
     healthy: bool

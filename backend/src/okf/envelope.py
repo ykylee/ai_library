@@ -1,9 +1,7 @@
 """OKF envelope: bundle wrapping (M-v0.3.0-alpha placeholder).
 
-DevHub umbrella §3.5.1 (bundle 구조) + ADR-0037 §3 (OKF spec) 정합.
-
 M-v0.3.0+ 부터 구현:
-- make_envelope(raw_entries, source_meta) -> Envelope: bundle 디렉터리 생성 + index.md 자동 생성
+- make_envelope(bundle_name, source, var_dir) -> Envelope: bundle 디렉터리 생성 + index.md 자동 생성
 - parse_envelope(path) -> Envelope: bundle 디렉터리 read
 """
 from __future__ import annotations

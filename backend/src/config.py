@@ -1,11 +1,9 @@
 """4-priority REPO_ROOT auto-detect + config loader.
 
-DevHub umbrella §2.4 (4-priority REPO_ROOT) + §16.4 (monitoring) + §2.4 standalone 검증 매트릭스 정합.
-
 4-priority chain:
 1. explicit `--repo-root` flag / `AI_LIBRARY_REPO_ROOT` env (1순위)
 2. `git rev-parse --show-toplevel` (in-repo 운영 시 자동 detect)
-3. legacy fallback: 부모 디렉터리 5단계 walk
+3. legacy fallback: 부모 디렉터리 5단계 walk (AGENTS.md + web/ + backend/ 마커)
 4. fallback: cwd (1회 stderr deprecation warning)
 """
 from __future__ import annotations

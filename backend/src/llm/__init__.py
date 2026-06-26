@@ -1,7 +1,5 @@
 """Pi LLM enrich agent (M-v0.3.0-alpha placeholder).
 
-DevHub umbrella §3.5.7 (Pi LLM cross-link auto-resolution) + §3.5.8 (false positive rollback) 정합.
-
 M-v0.3.1+ 부터 활성화:
 - sdk mode (default): pi-coding-agent SDK 호출
 - rpc mode: 외부 Pi RPC 서버 호출 (production)
