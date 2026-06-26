@@ -23,7 +23,9 @@
 
 DevHub 의 v0.2.0 umbrella doc (2026-06-17 accepted) 는 `backend-knowledge/` 디렉터리 신설 결정. 2026-06-17~2026-06-22 in-repo 운영 (M-v0.2.0~v0.2.3 PoC + frontend shell + 영향 doc 4종 + ADR-0037/0038).
 
-2026-06-23 사용자 결정: `backend-knowledge/` 를 **외부 repo 로 extraction** — 본 repo (`ykylee/ai_library`, Gitea private, https://homelab.ddn777.synology.me/gitea/yklee/ai_library) 신설. vendor import pattern 의 **역방향 정공법** — 외부 발매자 (= 본 repo) 가 DevHub 의 결정을 흡수.
+2026-06-23 사용자 결정: `backend-knowledge/` 를 **외부 repo 로 extraction** — 본 repo (`ykylee/ai_library`, GitHub public, https://github.com/ykylee/ai_library) 신설. vendor import pattern 의 **역방향 정공법** — 외부 발매자 (= 본 repo) 가 DevHub 의 결정을 흡수.
+
+2026-06-26 사용자 결정: primary origin = **GitHub** (사외 tier 정합). `gitea` remote 는 *mirror* 역할로 유지 (NAS 백업용).
 
 ## 2. 결정
 
