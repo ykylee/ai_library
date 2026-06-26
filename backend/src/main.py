@@ -1,12 +1,14 @@
 """ai_library backend — FastAPI app entry + CLI.
 
-본 파일은 M-v0.0.1-alpha placeholder.
-M-v0.0.2+ 부터 FastAPI app + typer CLI + 4-priority REPO_ROOT auto-detect + API versioning 라우터 등록.
+본 파일은 M-v0.0.2-a foundation + 6 router 등록 진입점.
+
+구조:
+- typer CLI: `serve` / `version` / `detect-root`
+- `create_app()` : FastAPI app factory + envelope middleware + 6 router 등록
 """
 from __future__ import annotations
 
 import logging
-import os
 import sys
 from pathlib import Path
 
@@ -15,28 +17,30 @@ import uvicorn
 from fastapi import FastAPI
 
 from . import __version__
+from .api import install_middleware, install_root_routers
+from .api.v0_2 import api_v0_2_router
 from .config import detect_repo_root, load_config
-from .okf import make_envelope, parse_envelope  # noqa: F401  (M-v0.0.2+ register)
 
 logger = logging.getLogger("ai_library")
-cli = typer.Typer(help="ai_library backend CLI (M-v0.0.1-alpha)")
+cli = typer.Typer(help="ai_library backend CLI")
 
 
 def create_app() -> FastAPI:
-    """FastAPI app factory.
+    """FastAPI app factory — M-v0.0.2-a foundation.
 
-    M-v0.0.2+ 부터 src.api.v0_2 의 6 router (ingest / bundles / concepts / raw / audit / graph) 등록.
-    M-v0.0.4+ 부터 /api/v0-3/ 라우터 추가 (deprecation policy §16.2 정합).
+    등록 순서:
+    1. envelope middleware (request.state.envelope 주입)
+    2. error handler (ApiError → JSONResponse)
+    3. /api/v0-2/ router aggregator (M-v0.0.2-a: health, M-v0.0.2-b: ingest/bundles, M-v0.0.2-c: concepts/raw/audit/graph)
     """
     app = FastAPI(
         title="ai_library backend",
         version=__version__,
         description="AI Agent Library — OKF bundle engine + LLM enrich agents.",
     )
-    # M-v0.0.2+ router 등록 자리
-    # from .api.v0_2 import ingest, bundles, concepts, raw, audit, graph
-    # app.include_router(ingest.router, prefix="/api/v0-2/ingest", tags=["ingest"])
-    # ...
+    install_middleware(app)
+    install_root_routers(app)
+    app.include_router(api_v0_2_router)
     return app
 
 

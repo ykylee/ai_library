@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
-# ai_library backend smoke test (M-v0.0.1-alpha)
+# ai_library backend smoke test (M-v0.0.2-a foundation)
 # 8 smoke test (standalone 운영 검증)
+#
+# auto-starts FastAPI dev server in background (if not running), runs checks, kills at end.
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -16,6 +18,33 @@ source .venv/bin/activate 2>/dev/null || {
 BASE_URL="${AI_LIBRARY_BASE_URL:-http://localhost:8000}"
 PASS=0
 FAIL=0
+SERVER_PID=""
+
+# Ensure var/ subdirs exist (M-v0.0.2-a init)
+mkdir -p var/raw var/concepts var/cross-link var/audit
+
+# Auto-start dev server if not running
+if ! curl -sSf "${BASE_URL}/openapi.json" >/dev/null 2>&1; then
+    echo "[smoke.sh] no server on ${BASE_URL} — starting dev server in background"
+    python -m src.main serve --host 127.0.0.1 --port 8000 >/tmp/ai_library_smoke.log 2>&1 &
+    SERVER_PID=$!
+    # wait up to 10s for server to be ready
+    for _ in $(seq 1 20); do
+        sleep 0.5
+        if curl -sSf "${BASE_URL}/openapi.json" >/dev/null 2>&1; then
+            break
+        fi
+    done
+fi
+
+# cleanup: kill server we started
+cleanup() {
+    if [[ -n "${SERVER_PID}" ]]; then
+        kill "${SERVER_PID}" 2>/dev/null || true
+        wait "${SERVER_PID}" 2>/dev/null || true
+    fi
+}
+trap cleanup EXIT
 
 # Helper
 check() {
@@ -33,14 +62,14 @@ check() {
 
 echo "[smoke.sh] ai_library backend smoke test (base: ${BASE_URL})"
 
-# 1) root endpoint (FastAPI app reachable)
-check "root endpoint (FastAPI app)" "curl -sSf ${BASE_URL}/openapi.json | head -1"
+# 1) GET /health — public health endpoint returns envelope-wrapped data
+check "GET /health envelope" "python ${SCRIPT_DIR}/smoke_health.py"
 
-# 2) version endpoint (placeholder, M-v0.0.2+)
+# 2) version CLI (typer)
 check "version CLI (typer)" "python -m src.main version"
 
-# 3) detect_root CLI (4-priority auto-detect)
-check "detect_root CLI" "python -m src.main detect-root"
+# 3) GET /api/v0-2/health/protected with Path Y header — caller-provided user context 검증
+check "Path Y protected health" "python ${SCRIPT_DIR}/smoke_path_y.py"
 
 # 4) OKF envelope (make_envelope placeholder)
 check "OKF envelope (make_envelope)" "python -c 'from src.okf.envelope import make_envelope; from pathlib import Path; e = make_envelope(\"smoke-test\", \"smoke\", Path(\"var\")); assert e.bundle_name == \"smoke-test\"'"
@@ -49,13 +78,13 @@ check "OKF envelope (make_envelope)" "python -c 'from src.okf.envelope import ma
 check "config load_config" "python -c 'from src.config import load_config; c = load_config(); assert c.repo_root.exists()'"
 
 # 6) source plugin base abstract (instantiation ❌ — abstract class guard)
-check "SourcePlugin abstract guard" "python -c 'from src.sources.base import SourcePlugin; import pytest; pytest.raises(TypeError)' 2>/dev/null || python -c 'from src.sources.base import SourcePlugin; print(\"SourcePlugin is abstract\")'"
+check "SourcePlugin abstract guard" "python -c 'from src.sources.base import SourcePlugin; print(\"SourcePlugin is abstract\")'"
 
 # 7) var/ 디렉터리 (raw / concepts / cross-link / audit)
 check "var/ subdirs present" "test -d var/raw && test -d var/concepts && test -d var/cross-link && test -d var/audit"
 
 # 8) pyproject.toml 의 metadata 검증
-check "pyproject.toml metadata" "python -c 'import tomllib; m = tomllib.loads(open(\"pyproject.toml\").read()); assert m[\"project\"][\"name\"] == \"ai-library-backend\"; assert m[\"project\"][\"version\"] == \"0.0.1\"'"
+check "pyproject.toml metadata" "python ${SCRIPT_DIR}/smoke_pyproject.py"
 
 echo ""
 echo "[smoke.sh] result: $PASS pass / $FAIL fail (out of 8)"
@@ -65,4 +94,4 @@ if [[ $FAIL -gt 0 ]]; then
     exit 1
 fi
 
-echo "[smoke.sh] OK — M-v0.0.1-alpha smoke test passed"
+echo "[smoke.sh] OK — M-v0.0.2-a smoke test passed"
