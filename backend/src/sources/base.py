@@ -1,4 +1,4 @@
-"""Source plugin abstract base (M-v0.3.0-alpha placeholder).
+"""Source plugin abstract base (M-v0.0.1-alpha placeholder).
 
 각 plugin 은 SourcePlugin 상속 + 4 method 구현:
 - meta() -> SourceMeta: source 식별 + body_template
@@ -6,7 +6,7 @@
 - normalize(raw) -> NormalizedEntry: 정규화된 entry (8종 OKF type enum 중 1)
 - health() -> HealthStatus: source health + auth failure counter
 
-M-v0.3.0+ 부터 실제 구현.
+M-v0.0.2+ 부터 실제 구현.
 """
 from __future__ import annotations
 
@@ -20,7 +20,7 @@ class SourceMeta:
     """외부 시스템 source 메타 정보."""
 
     name: str  # 예: "gitea_repo_pull"
-    version: str  # 예: "0.3.0"
+    version: str  # 예: "0.0.1"
     body_template: str  # OKF concept 변환용 Jinja2 template
     health_url: str | None = None
 

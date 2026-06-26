@@ -1,6 +1,6 @@
 {
   "name": "ai-library-web",
-  "version": "0.3.0",
+  "version": "0.0.1",
   "description": "ai_library standalone management frontend (SvelteKit 2 + Svelte 5 + TypeScript 5)",
   "private": true,
   "type": "module",

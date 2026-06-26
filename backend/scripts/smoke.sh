@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# ai_library backend smoke test (M-v0.3.0-alpha)
-# 8 smoke test (DevHub umbrella §6.5.4 E2E 정합)
+# ai_library backend smoke test (M-v0.0.1-alpha)
+# 8 smoke test (standalone 운영 검증)
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -36,7 +36,7 @@ echo "[smoke.sh] ai_library backend smoke test (base: ${BASE_URL})"
 # 1) root endpoint (FastAPI app reachable)
 check "root endpoint (FastAPI app)" "curl -sSf ${BASE_URL}/openapi.json | head -1"
 
-# 2) version endpoint (placeholder, M-v0.3.0+)
+# 2) version endpoint (placeholder, M-v0.0.2+)
 check "version CLI (typer)" "python -m src.main version"
 
 # 3) detect_root CLI (4-priority auto-detect)
@@ -55,7 +55,7 @@ check "SourcePlugin abstract guard" "python -c 'from src.sources.base import Sou
 check "var/ subdirs present" "test -d var/raw && test -d var/concepts && test -d var/cross-link && test -d var/audit"
 
 # 8) pyproject.toml 의 metadata 검증
-check "pyproject.toml metadata" "python -c 'import tomllib; m = tomllib.loads(open(\"pyproject.toml\").read()); assert m[\"project\"][\"name\"] == \"ai-library-backend\"; assert m[\"project\"][\"version\"] == \"0.3.0\"'"
+check "pyproject.toml metadata" "python -c 'import tomllib; m = tomllib.loads(open(\"pyproject.toml\").read()); assert m[\"project\"][\"name\"] == \"ai-library-backend\"; assert m[\"project\"][\"version\"] == \"0.0.1\"'"
 
 echo ""
 echo "[smoke.sh] result: $PASS pass / $FAIL fail (out of 8)"
@@ -65,4 +65,4 @@ if [[ $FAIL -gt 0 ]]; then
     exit 1
 fi
 
-echo "[smoke.sh] OK — M-v0.3.0-alpha smoke test passed"
+echo "[smoke.sh] OK — M-v0.0.1-alpha smoke test passed"

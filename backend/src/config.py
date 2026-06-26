@@ -63,11 +63,11 @@ def detect_repo_root(start: Path | None = None) -> Path:
 
 @dataclass(frozen=True)
 class Config:
-    """ai_library backend config (M-v0.3.0-alpha minimal)."""
+    """ai_library backend config (M-v0.0.1-alpha minimal)."""
 
     repo_root: Path
     var_dir: Path = field(default_factory=lambda: Path("./var"))
-    storage_mode: str = "file"  # file | db (M-v0.3.2+ 부터 db 모드 활성화)
+    storage_mode: str = "file"  # file | db (M-v0.0.4+ 부터 db 모드 활성화)
     log_level: str = "info"
     host: str = "0.0.0.0"
     port: int = 8000

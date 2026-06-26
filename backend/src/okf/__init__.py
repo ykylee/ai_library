@@ -1,8 +1,8 @@
-"""OKF bundle engine (M-v0.3.0-alpha placeholder).
+"""OKF bundle engine (M-v0.0.1-alpha placeholder).
 
 1차 출처: Google Cloud Open Knowledge Format v0.1 (Apache 2.0, `okf/SPEC.md` 본 repo 사본).
 
-M-v0.3.0+ 부터 실제 구현:
+M-v0.0.2+ 부터 실제 구현:
 - envelope.py: make_envelope() / parse_envelope() (bundle wrapping)
 - frontmatter.py: YAML frontmatter parse/emit
 - normalize.py: data normalization pipeline

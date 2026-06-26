@@ -8,6 +8,6 @@
 - audit.py    : GET /audit
 - graph.py    : GET /graph + POST /graph/reindex
 
-M-v0.3.0-alpha = placeholder. 실제 endpoint 는 M-v0.3.0+ 부터 backend core 작성.
+M-v0.0.1-alpha = placeholder. 실제 endpoint 는 M-v0.0.2+ 부터 backend core 작성.
 """
 from __future__ import annotations

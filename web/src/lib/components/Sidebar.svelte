@@ -24,7 +24,7 @@
 <nav class="sidebar">
 	<header>
 		<h1>ai_library</h1>
-		<p class="sub">v0.3.0-alpha</p>
+		<p class="sub">v0.0.1-alpha</p>
 	</header>
 
 	<ul>

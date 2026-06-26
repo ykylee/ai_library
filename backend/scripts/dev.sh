@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# ai_library backend dev server (M-v0.3.0-alpha)
+# ai_library backend dev server (M-v0.0.1-alpha)
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
