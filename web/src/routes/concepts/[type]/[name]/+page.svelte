@@ -59,7 +59,7 @@
 	<p class="muted">Loading...</p>
 {:else if concept}
 	<section class="card">
-		<h2>Frontmatter (12 field, OKF v0.1)</h2>
+		<h2>Frontmatter (12 field, OKF v0.1) — x_ai_library_* prefix</h2>
 		<table class="kv">
 			<tbody>
 				<tr><th>type</th><td><code>{concept.frontmatter.type}</code></td></tr>
@@ -68,15 +68,15 @@
 				<tr><th>resource</th><td>{concept.frontmatter.resource ?? '-'}</td></tr>
 				<tr><th>tags</th><td><code>{concept.frontmatter.tags?.join(', ') ?? '-'}</code></td></tr>
 				<tr><th>timestamp</th><td>{concept.frontmatter.timestamp ?? '-'}</td></tr>
-				<tr><th>x_devhub_source</th><td><code>{concept.frontmatter.x_devhub_source ?? '-'}</code></td></tr>
-				<tr><th>x_devhub_bundle</th><td><code>{concept.frontmatter.x_devhub_bundle ?? '-'}</code></td></tr>
-				<tr><th>x_devhub_version</th><td><code>{concept.frontmatter.x_devhub_version}</code></td></tr>
-				<tr><th>x_devhub_curator</th><td><code>{concept.frontmatter.x_devhub_curator}</code></td></tr>
-				<tr><th>x_devhub_owner_org_id</th><td><code>{concept.frontmatter.x_devhub_owner_org_id ?? '-'}</code></td></tr>
-				<tr><th>x_devhub_owner_user_id</th><td><code>{concept.frontmatter.x_devhub_owner_user_id ?? '-'}</code></td></tr>
-				<tr><th>x_devhub_owner_org_unit_ids</th><td><code>{concept.frontmatter.x_devhub_owner_org_unit_ids?.join(', ') ?? '-'}</code></td></tr>
-				<tr><th>x_devhub_owner_project_ids</th><td><code>{concept.frontmatter.x_devhub_owner_project_ids?.join(', ') ?? '-'}</code></td></tr>
-				<tr><th>x_devhub_visibility</th><td><code>{concept.frontmatter.x_devhub_visibility}</code></td></tr>
+				<tr><th>x_ai_library_source</th><td><code>{concept.frontmatter.x_ai_library_source ?? '-'}</code></td></tr>
+				<tr><th>x_ai_library_bundle</th><td><code>{concept.frontmatter.x_ai_library_bundle ?? '-'}</code></td></tr>
+				<tr><th>x_ai_library_version</th><td><code>{concept.frontmatter.x_ai_library_version}</code></td></tr>
+				<tr><th>x_ai_library_curator</th><td><code>{concept.frontmatter.x_ai_library_curator}</code></td></tr>
+				<tr><th>x_ai_library_owner_org_id</th><td><code>{concept.frontmatter.x_ai_library_owner_org_id ?? '-'}</code></td></tr>
+				<tr><th>x_ai_library_owner_user_id</th><td><code>{concept.frontmatter.x_ai_library_owner_user_id ?? '-'}</code></td></tr>
+				<tr><th>x_ai_library_owner_org_unit_ids</th><td><code>{concept.frontmatter.x_ai_library_owner_org_unit_ids?.join(', ') ?? '-'}</code></td></tr>
+				<tr><th>x_ai_library_owner_project_ids</th><td><code>{concept.frontmatter.x_ai_library_owner_project_ids?.join(', ') ?? '-'}</code></td></tr>
+				<tr><th>x_ai_library_visibility</th><td><code>{concept.frontmatter.x_ai_library_visibility}</code></td></tr>
 			</tbody>
 		</table>
 	</section>

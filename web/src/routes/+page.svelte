@@ -44,7 +44,7 @@
 
 <header class="page-header">
 	<h1>Dashboard</h1>
-	<p>v0.2.0 PoC standalone backend knowledge tool (umbrella doc §1.2 G7 + ADR-0035)</p>
+	<p>ai_library v0.3.0-alpha standalone (DevHub §1.2 G7 standalone 정책 흡수 + ADR-0038 extraction)</p>
 	<button type="button" onclick={load} disabled={loading}>{loading ? 'Loading...' : 'Refresh'}</button>
 </header>
 

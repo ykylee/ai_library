@@ -88,7 +88,7 @@ npm run dev          # SvelteKit dev server
 # backend/ (M-v0.3.0+ 본격 구현)
 cd backend
 pip install -e .
-python -m backend_knowledge.cli.serve  # FastAPI server
+ai-library serve                      # FastAPI server (pyproject.toml [project.scripts] entry)
 
 # standalone 검증 (M-v0.3.0 release 시점에 활성화)
 bash scripts/check_standalone_drift.sh
