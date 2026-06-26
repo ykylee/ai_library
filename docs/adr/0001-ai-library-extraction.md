@@ -1,120 +1,195 @@
-# ADR-0001: ai_library extraction (vendor import pattern 역방향)
+# ADR-0001: ai_library founding charter
 
-- **Status**: accepted (2026-06-23)
-- **Date**: 2026-06-23
-- **Authors**: ykylee (사용자 결정 1차 출처)
-- **Supersedes**: DevHub ADR-0038 (`backend-knowledge` 신설) 의 결정 자체는 변경 ❌. 본 ADR 은 *외부 repo 흡수 결정* (DevHub §15 ADR supersession 정공법 정합, historical supersession, extraction).
-- **Superseded-by**: (none)
-- **본 repo 의 위치**: `docs/adr/0001-ai-library-extraction.md`
-- **DevHub 측 cross-reference**: [DevHub ADR-0038 §6 Supersession 신규 row](https://github.com/ykylee/Devhub_example/blob/main/docs/adr/0038-backend-knowledge-creation.md) (본 ADR 의 supersede 가 아닌 외부 repo 흡수 결정)
-
-## 0. Provenance (1차 출처)
-
-본 ADR 의 결정 (1. d가 맞아. 2. ~/repos/ai_library. 3. 완전 독립. 4. cross-ref 정합. 5. 1 참고 정리) 은 **사용자 2026-06-23 결정** (verbatim).
-
-관련 1차 출처:
-1. [DevHub ADR-0037 OKF v0.1 채택](https://github.com/ykylee/Devhub_example/blob/main/docs/adr/0037-okf-adoption.md) (subsumed by 본 repo ADR-0002)
-2. [DevHub ADR-0038 backend-knowledge 신설](https://github.com/ykylee/Devhub_example/blob/main/docs/adr/0038-backend-knowledge-creation.md) (본 ADR 의 supersede source)
-3. [DevHub umbrella `release_v0-2_roadmap.md` §1.2 G1~G7 + §3 OKF 결정](https://github.com/ykylee/Devhub_example/blob/main/docs/planning/release_v0-2_roadmap.md)
-4. [DevHub child doc `external-integrations-agentic-rag-roadmap.md` §3 (Phase 1 adapter pattern) + §4 (Phase 2 agentic RAG)](https://github.com/ykylee/Devhub_example/blob/main/docs/planning/external-integrations-agentic-rag-roadmap.md)
-5. DevHub `AGENTS.md` line 29 redirect
+- **Status**: ✅ Accepted (2026-06-26)
+- **Date**: 2026-06-26
+- **Deciders**: yklee (owner, sole maintainer)
+- **Tier**: 사외 (external-facing, public, MIT)
 
 ## 1. Context
 
-DevHub 의 v0.2.0 umbrella doc (2026-06-17 accepted) 는 `backend-knowledge/` 디렉터리 신설 결정. 2026-06-17~2026-06-22 in-repo 운영 (M-v0.2.0~v0.2.3 PoC + frontend shell + 영향 doc 4종 + ADR-0037/0038).
+`ai_library` 는 **vendor-neutral 한 knowledge bundle engine + LLM enrich agent** 의 standalone reference implementation 이다. 본 ADR 은 ai_library 의 founding charter 로서, 프로젝트의 존재 이유 / 운영 원칙 / 외부 경계를 선언한다.
 
-2026-06-23 사용자 결정: `backend-knowledge/` 를 **외부 repo 로 extraction** — 본 repo (`ykylee/ai_library`, GitHub public, https://github.com/ykylee/ai_library) 신설. vendor import pattern 의 **역방향 정공법** — 외부 발매자 (= 본 repo) 가 DevHub 의 결정을 흡수.
-
-2026-06-26 사용자 결정: primary origin = **GitHub** (사외 tier 정합). `gitea` remote 는 *mirror* 역할로 유지 (NAS 백업용).
+본 repo 는 이전에 외부 umbrella 프로젝트의 child directory 였으나, 본 ADR 부터 **완전 독립** 으로 운영된다. 이전 lineage 는 historical supersession 으로 처리 (본 ADR §7) 되며, 더 이상 upstream / downstream 관계가 없다.
 
 ## 2. 결정
 
-### 2.1 boundary = **d-1 정공법**
+### 2.1 Scope
 
-본 repo 의 흡수 범위 = **frontend web/ (SvelteKit 2 + Svelte 5 + vitest 21 src file, 27 file) + 영향 doc 4종 통째 이식**.
+본 repo 가 제공하는 것:
 
-- frontend shell 통째 이식 (DevHub `backend-knowledge/web/` 의 27 source file + node_modules 제외)
-- backend code 자체는 **이식 ❌** (DevHub 의 `backend-knowledge/` 가 spec 단계였고, 실제 Python code 0 file) — 본 repo 의 `backend/` 는 **placeholder skeleton** (FastAPI app + OKF envelope + source plugin abstract base)
-- 영향 doc 4종 redirect 1:1:
-  1. umbrella doc `release_v0-2_roadmap.md` §1.2 G1 cell + §9 2026-06-23 row
-  2. ADR-0037 §6 supersession row
-  3. ADR-0038 §6 supersession row
-  4. child doc `external-integrations-agentic-rag-roadmap.md` §8 변경 이력 row
-  5. DevHub `AGENTS.md` line 29 redirect
-
-### 2.2 standalone 정책
-
-본 repo (`ai_library`) 는 **완전 standalone** 운영:
-
-- 다른 backend (DevHub `backend-core` 등) 연결 ❌
-- OIDC ❌ (외부 vault 의 PAT/API key 만 사용)
-- Network: §2.6.1 3 단계 (dev 사외 / staging 사내 / production 사내)
-- Storage: file-based (M-v0.3.0+ default) + DB-based 듀얼 모드 (M-v0.3.2+ 옵션)
-- Tier: 사외 (사내 한정 정보 0)
-- API versioning: §16 정책 (M-v0.3.0+ `/api/v0-2/` prefix, 12개월 deprecation policy)
-
-### 2.3 vendor import pattern 역방향
-
-본 repo = 외부 발매자. DevHub 측은 본 repo 를 **vendored re-introduce** 가능 (vendor import pattern). 본 repo 의 결정 (OKF v0.1 채택 + 7종 source plugin + standalone 운영) 은 DevHub 의 umbrella doc §1.2 G1~G7 standalone 정책과 **1:1 정합**.
-
-## 3. M-v0.3.0 마일스톤
-
-| M | 상태 | scope |
-| --- | --- | --- |
-| M-v0.3.0-alpha | ✅ done (2026-06-23) | 본 ADR + ADR-0002 + roadmap + frontend shell 이식 + backend skeleton + standalone 운영 |
-| M-v0.3.0 | ⏳ planned (2026-Q3) | FastAPI app + 6 router 등록 (17 endpoint) + 8 smoke test + pyproject.toml editable install |
-| M-v0.3.1 | ⏳ planned (2026-Q3) | Pi LLM enrich agent 활성화 (sdk mode default, 3 mode confirm workflow) |
-| M-v0.3.2 | ⏳ planned (2026-Q4) | DB-based raw + Pi periodic ingest pipeline (DevHub umbrella §10 + §11 정합) |
-| M-v0.3.3 | ⏳ planned (2026-Q4) | cross-link reverse index + governance audit log dashboard |
-| M-v0.3.4 | ⏳ planned (2027-Q1) | API versioning v0-3 도입 (§16.2 dual endpoint support) |
-
-## 4. Cross-reference (4-way)
-
-| 위치 | 변경 |
+| 영역 | 내용 |
 | --- | --- |
-| [DevHub umbrella `release_v0-2_roadmap.md` §1.2 G1 cell](https://github.com/ykylee/Devhub_example/blob/main/docs/planning/release_v0-2_roadmap.md) | redirect 1줄 |
-| [DevHub umbrella `release_v0-2_roadmap.md` §9 변경 이력 2026-06-23 row](https://github.com/ykylee/Devhub_example/blob/main/docs/planning/release_v0-2_roadmap.md) | 신규 row |
-| [DevHub ADR-0037 §6 Supersession section 신규 row](https://github.com/ykylee/Devhub_example/blob/main/docs/adr/0037-okf-adoption.md) | subsumed by 본 repo ADR-0002 |
-| [DevHub ADR-0038 §6 Supersession section 신규 row](https://github.com/ykylee/Devhub_example/blob/main/docs/adr/0038-backend-knowledge-creation.md) | superseded by 본 ADR-0001 |
-| [DevHub child doc `external-integrations-agentic-rag-roadmap.md` §8 변경 이력 row](https://github.com/ykylee/Devhub_example/blob/main/docs/planning/external-integrations-agentic-rag-roadmap.md) | 2026-06-23 row 신규 |
-| [DevHub `AGENTS.md` line 29](https://github.com/ykylee/Devhub_example/blob/main/AGENTS.md) | redirect 1줄 |
-| 본 repo `AGENTS.md` line 7 + 23 | provenance + scope redirect |
-| 본 repo `README.md` provenance table | 흡수 source 4 row |
+| **Frontend** | SvelteKit 2 + Svelte 5 + TypeScript 5 standalone management UI (Path Y caller-provided user context, optional) |
+| **Backend** | FastAPI + Pydantic v2 + OKF bundle engine + Source plugin ABC + LLM enrich placeholder |
+| **OKF spec** | `backend/okf/SPEC.md` — Google Cloud Open Knowledge Format v0.1 의 본 repo 사본 (Apache 2.0, vendor-neutral) |
+| **Source plugins** | 5종 = `mock` + `gitea_repo_pull` + `gitea_issue` + `gitea_wiki` + `gitea_action` (모두 SourcePlugin ABC 상속) |
+| **LLM enrich** | Pi SDK 기반 placeholder (sdk / rpc / standalone mode), M-v0.0.3+ 부터 활성화 |
 
-## 5. Consequences
+본 repo 가 **제공하지 않는** 것:
 
-### 5.1 Positive
+- 중앙 인증 (OIDC / SSO / Keycloak / LDAP ❌)
+- 다른 backend / microservice / message queue 연결 ❌
+- 사내 인프라 / private network / vault 자동 주입 ❌
+- Source plugin 외의 외부 시스템 통합 (예: Prometheus / HRDB / 사내 metrics 는 옵션 env var 로만 정의, 실제 활성화 시 별도 결정)
 
-- 본 repo = 외부 발매자 — DevHub 의 umbrella 가 본 repo 의 결정 흡수 가능 (vendor import pattern)
-- standalone 운영으로 DevHub 의 다른 backend 와 decoupled
-- frontend shell + backend spec + 영향 doc 4종이 한 repo 에서 1:1 byte-identical 운영
-- M-v0.3.0+ 부터 독립 release line 가능 (DevHub umbrella 와 무관)
+### 2.2 Tier 정책 = **사외**
 
-### 5.2 Negative (trade-off)
+본 repo 는 **사외 tier** 다. 이는 다음을 의미한다:
 
-- DevHub 측에서 본 repo 의 변경을 자동 반영 ❌ (vendor import 패턴이 vendored re-introduce 필요)
-- cross-reference 4-way 동시 갱신 부담 (umbrella + ADR-0037 + ADR-0038 + child + AGENTS 5 file)
-- 본 repo 의 결정이 DevHub 의 결정과 drift 가능 → ADR supersession 정공법 (§6) 으로 해소
+- 외부 publish 가능 (GitHub public, MIT)
+- vendor-neutral (특정 cloud / PaaS / 회사에 종속 ❌)
+- 사내 한정 정보 단일 occurrence ❌ (예: `DEVHUB_*` / `kc.internal.example.com` / `devhub.example.com` / `172.16.0.0/12` / `internal-registry.example.com` / 특정 NAS hostname 등)
+- 사내 한정 시크릿/호스트 도입 시 즉시 fail (PR 시 self-check 필수)
 
-### 5.3 Risks
+### 2.3 Standalone 정책
 
-- 본 repo 의 standalone 운영이 DevHub 의 standalone 정책과 drift 가능 → M-v0.3.0+ 부터 weekly cross-reference 검증
-- 본 repo 의 standalone 운영이 DevHub 의 운영 (OIDC, 사내 network) 과 무관 → Tier 분리 정책 (사외/사내/공용) 정합
+본 repo 는 **완전 standalone** 으로 운영된다:
 
-## 6. Supersession History
+- 다른 backend / microservice 연결 ❌
+- OIDC / SSO / Keycloak 등 인증 게이트웨이 ❌
+- 사내 인프라 / private network 직접 의존 ❌
+- vendor lock-in (특정 cloud provider / paid service 종속) ❌
 
-| Date | Event | Reference |
+**Path Y caller-provided user context (optional)**: 인증 게이트웨이 대신, caller 가 직접 `X-AiLibrary-User-Context` HTTP header 로 user context 를 주입한다. backend 는 이 header 의 signature / payload 를 검증하지 **않는다** (trust the caller). 내부 운영 / trusted 환경 가정.
+
+### 2.4 Version 정책
+
+- 시작 버전 = **`0.0.1-alpha`** (founding commit 기준)
+- SemVer 준수, 단 `0.x.y` 구간은 API / schema 변경 가능 (1.0.0 release 시 안정화)
+- 마일스톤 표기 = `M-v<x>.<y>` (예: `M-v0.0.1-alpha`, `M-v0.0.2`, `M-v0.0.3`)
+- release line = 독립 운영 (다른 umbrella 와 무관)
+
+### 2.5 Storage 정책
+
+- **file-based (default, M-v0.0.1-alpha+)**: `backend/var/raw/` + `backend/var/concepts/` + `backend/var/cross-link/` + `backend/var/audit/` 4-디렉터리 layout. 봉투 암호화 (M-v0.0.2+ 옵션).
+- **DB-based (M-v0.0.4+ 옵션)**: SQLite / PostgreSQL 듀얼 모드. file-based default 유지하면서 read-side cache 로 활용.
+
+### 2.6 API versioning 정책
+
+- 시작 = `/api/v0-2/` prefix (FURL-stable path)
+- dual endpoint 운영 = `/api/v0-2/` + `/api/v0-3/` 동시 운영 (M-v0.0.5+ 도입)
+- 12개월 deprecation policy: 신규 endpoint 는 `v0-3/` 부터, `v0-2/` 는 12개월 후 제거
+
+### 2.7 Source plugin 정책
+
+- 5종 기본 = `mock` + Gitea 4
+- 신규 source plugin 추가 시 `SourcePlugin` ABC 상속 + 4 method (meta / pull / normalize / health) 구현
+- plugin 등록 = `backend/src/sources/<plugin>.py` + `SOURCES` enum (web) + env var (backend)
+- plugin external 의존은 모두 옵션 (env var 비어 있으면 해당 plugin disable)
+
+## 3. 결과
+
+### 3.1 긍정적 결과
+
+- **독립 release line**: 본 repo 의 결정이 외부 umbrella 와 drift 가능 → ADR supersession 정공법 (§7) 으로 해소
+- **vendor-neutral**: 어떤 cloud / 회사에 deploy 해도 동일 동작
+- **GitHub public 정합**: 사외 tier → MIT license + public repo 가 자연스러움
+- **PoC / standalone 운영 적합**: 외부 의존 0 → researcher / 개인 contributor 도 즉시 clone 후 동작 가능
+
+### 3.2 부정적 결과 / 트레이드오프
+
+- **사내 시스템 통합 시 별도 결정 필요**: 특정 사내 vault / network / 인증 도입 시 §2.2 위반 → tier 정책 self-check + 별도 ADR 로 처리
+- **OIDC 미지원**: enterprise SSO 연동 안 함 → caller-side 인증 필요
+- **DB 듀얼 모드는 옵션**: file-based default 가 충분치 않을 수 있는 large-scale 운영 시 별도 평가
+
+### 3.3 독립 release line
+
+본 repo 는 umbrella 의 child project 가 **아니다**. umbrella / monorepo / vendor import pattern 의 vendored re-introduce 가능 (downstream consumer 가 결정), 단 본 repo 의 release cadence / scope 는 upstream 의 결정에 bound 되지 않는다.
+
+## 4. 운영 spec
+
+### 4.1 디렉터리 layout
+
+```
+ai_library/
+├── README.md                          # 본 repo 의 1차 입구 (1-line description + quick start)
+├── AGENTS.md                          # AI 워커 workflow 진입 규칙 (모든 agent 가 먼저 읽음)
+├── LICENSE                            # MIT
+├── .gitignore
+├── web/                               # SvelteKit 2 frontend
+│   ├── package.json
+│   ├── svelte.config.js / vite.config.ts / vitest.config.ts / tsconfig.json
+│   └── src/
+│       ├── app.html / app.css / app.d.ts
+│       ├── lib/                       # types / api / path-y / components
+│       └── routes/                    # +layout / +page / audit / bundles / concepts / ingest / raw
+├── backend/                           # FastAPI backend
+│   ├── pyproject.toml                 # name = "ai-library-backend", version = "0.0.1"
+│   ├── .env.example
+│   ├── README.md
+│   ├── src/
+│   │   ├── main.py                    # FastAPI app factory + typer CLI
+│   │   ├── config.py                  # 4-priority REPO_ROOT auto-detect
+│   │   ├── api/v0_2/                  # /api/v0-2/ routers (ingest / bundles / concepts / raw / audit / graph)
+│   │   ├── sources/                   # SourcePlugin ABC + 5종 plugin
+│   │   ├── okf/                       # OKF bundle engine + envelope + frontmatter
+│   │   └── llm/                       # Pi LLM enrich placeholder
+│   ├── okf/SPEC.md                    # OKF v0.1 본 repo 사본
+│   ├── var/                           # raw / concepts / cross-link / audit (gitignored)
+│   └── scripts/                       # dev.sh / smoke.sh
+└── docs/
+    ├── adr/                           # ADR 0001 (founding) + 0002 (OKF 채택) + 후속 ADR
+    └── planning/                      # umbrella roadmap (M-v0.0.x~v0.x.x milestone)
+```
+
+### 4.2 Quick start
+
+```bash
+# Frontend
+cd web && npm ci && npm run dev            # http://localhost:5173
+
+# Backend
+cd backend && pip install -e . && ai-library serve    # http://localhost:8000
+curl http://localhost:8000/api/v0-2/health
+
+# Smoke test
+cd backend && bash scripts/smoke.sh        # 8 smoke test (M-v0.0.1-alpha)
+```
+
+### 4.3 Tier self-check (PR 작성 시)
+
+작성자가 다음을 self-verify 해야 한다:
+
+- 신규 code 에 사내 한정 정보 (`DEVHUB_*` / 사내 hostname / private IP / 사내 SSO env) 등장 ❌
+- 신규 `.env*` example 에 실제 사내 호스트 ❌ (placeholder 로만)
+- 신규 source plugin 이 vendor lock-in 발생 ❌
+- ADR / SPEC 변경 시 본 ADR §2 tier / §2.3 standalone 정책 정합
+
+## 5. 대체 옵션 (고려했으나 채택 안 함)
+
+| 옵션 | 이유 |
+| --- | --- |
+| 외부 umbrella 의 monorepo child 로 머무름 | 본 repo 의 release cadence 가 upstream bound 됨 + tier 정책 drift 위험 |
+| Private GitHub repo + Gitea mirror 유지 | 사외 tier 정책상 public 정합, public 만으로 충분 |
+| 1.0.0 부터 시작 | 사전 placeholder skeleton + frontend shell 운영 중, 0.0.1-alpha 가 정직한 시작점 |
+| OKF 자체 spec 작성 (Google 형식 거부) | vendor-neutral 보존 + spec 작성 비용 절감 |
+
+## 6. Cross-reference
+
+- [`docs/adr/0002-okf-adoption.md`](0002-okf-adoption.md) — OKF v0.1 채택 결정 (본 ADR §2.1 scope 의 spec baseline)
+- [`docs/planning/v0.0.1-ai-library-roadmap.md`](../planning/v0.0.1-ai-library-roadmap.md) — 본 ADR 의 마일스톤 전개 (M-v0.0.1-alpha~v0.x.x)
+- [`backend/okf/SPEC.md`](../../backend/okf/SPEC.md) — OKF v0.1 본 repo 사본 (1차 출처)
+- [`AGENTS.md`](../../AGENTS.md) — 본 repo 의 AI 워커 workflow 진입 규칙 (tier 정책 self-check 통합)
+
+## 7. Supersession
+
+본 ADR 은 **founding charter** 이므로 supersede-source 자체가 없다. 후속 ADR 이 본 ADR 의 §2 tier / §2.3 standalone 정책을 변경하려면:
+
+1. 신규 ADR 작성 (`NNNN-<topic>.md`)
+2. 본 ADR 의 §8 변경 이력에 row 추가 (supersede 정보)
+3. 본 ADR §2.2 / §2.3 변경 시 **major version bump** 필요 (0.x.y → 0.x+1.0)
+
+historical supersession (이전 lineage):
+- 본 repo 가 이전에 외부 umbrella 프로젝트의 child 였던 시기의 결정은 **historical supersession** 으로 처리됨 (git history 보존, ADR 문서에서는 미언급).
+
+## 8. 변경 이력
+
+| 날짜 | 변경 | 결정 |
 | --- | --- | --- |
-| 2026-06-23 | 본 ADR-0001 작성 (외부 repo 흡수 결정, DevHub ADR-0038 의 supersede 가 아닌 *외부 repo 흡수 결정*) | 사용자 결정 "1. d가 맞아. 2. ~/repos/ai_library. 3. 완전 독립. 4. cross-ref 정합. 5. 1 참고 정리" |
+| 2026-06-26 | 본 ADR-0001 작성 (founding charter) | 사용자 결정 "0.0.1로 하자 아직은 0.1.0으로 할 단계는 아니야" + "이전 프로젝트의 잔재는 완전히 없애줘" |
 
-## 7. References
+## 9. Related
 
-- [DevHub ADR-0038 `backend-knowledge` 신설](https://github.com/ykylee/Devhub_example/blob/main/docs/adr/0038-backend-knowledge-creation.md) (본 ADR 의 supersede source)
-- [DevHub umbrella `release_v0-2_roadmap.md`](https://github.com/ykylee/Devhub_example/blob/main/docs/planning/release_v0-2_roadmap.md) (§1.2 G1~G7 + §3 OKF + §15 ADR supersession 정공법)
-- [DevHub `AGENTS.md`](https://github.com/ykylee/Devhub_example/blob/main/AGENTS.md) (line 29 redirect)
-- [DevHub child doc `external-integrations-agentic-rag-roadmap.md`](https://github.com/ykylee/Devhub_example/blob/main/docs/planning/external-integrations-agentic-rag-roadmap.md)
-- [DevHub `docs/governance/worker_division.md` §4.2 ADR supersession 정공법](https://github.com/ykylee/Devhub_example/blob/main/docs/governance/worker_division.md) (12개월 deprecation policy + 5 step 정공법)
-- 본 repo `AGENTS.md` (workflow 진입 규칙)
-- 본 repo [`docs/adr/0002-okf-adoption.md`](0002-okf-adoption.md) (sibling ADR, OKF v0.1 채택)
-- 본 repo [`docs/planning/v0.3.0-ai-library-roadmap.md`](../planning/v0.3.0-ai-library-roadmap.md) (umbrella 흡수)
-- 본 repo [`backend/okf/SPEC.md`](../../backend/okf/SPEC.md) (OKF v0.1 in-repo 적응)
+- 본 ADR §2.4 version 정책 = `docs/planning/v0.0.1-ai-library-roadmap.md` 의 milestone table 과 1:1 정합
+- 본 ADR §2.2 tier 정책 = `AGENTS.md` §3 작업 원칙의 "Tier 분리" 와 1:1 정합
+- 본 ADR §2.3 standalone 정책 = `AGENTS.md` §6 운영 정책 + §2.6 network 정책 과 1:1 정합
