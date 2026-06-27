@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# ai_library backend smoke test (M-v0.0.2-b)
-# 8 smoke test (standalone 운영 검증)
+# ai_library backend smoke test (M-v0.0.2-c)
+# 8 smoke test (standalone 운영 검증, 17 endpoint cover)
 #
 # auto-starts FastAPI dev server in background (if not running), runs checks, kills at end.
 set -euo pipefail
@@ -71,14 +71,14 @@ check "version CLI (typer)" "python -m src.main version"
 # 3) GET /api/v1/health/protected with Path Y header — caller-provided user context 검증
 check "Path Y protected health" "python ${SCRIPT_DIR}/smoke_path_y.py"
 
-# 4) GET /api/v1/ingest/statuses — 5종 source list
-check "GET /api/v1/ingest/statuses" "python ${SCRIPT_DIR}/smoke_ingest_statuses.py"
+# 4) GET /api/v1/search — concept 검색 (M-v0.0.2-c)
+check "GET /api/v1/search" "python ${SCRIPT_DIR}/smoke_search.py"
 
-# 5) POST /api/v1/ingest/mock/sync?dry_run=true — mock source sync
-check "POST /api/v1/ingest/mock/sync" "python ${SCRIPT_DIR}/smoke_ingest_sync.py"
+# 5) raw list + delete cycle (M-v0.0.2-c)
+check "raw list + delete cycle" "python ${SCRIPT_DIR}/smoke_raw_cycle.py"
 
-# 6) bundles cycle (create + get + rebuild)
-check "bundles cycle" "python ${SCRIPT_DIR}/smoke_bundles_cycle.py"
+# 6) audit + graph reindex cycle (M-v0.0.2-c)
+check "audit + graph reindex" "python ${SCRIPT_DIR}/smoke_audit_graph.py"
 
 # 7) var/ 디렉터리 (raw / concepts / cross-link / audit)
 check "var/ subdirs present" "test -d var/raw && test -d var/concepts && test -d var/cross-link && test -d var/audit"
@@ -94,4 +94,4 @@ if [[ $FAIL -gt 0 ]]; then
     exit 1
 fi
 
-echo "[smoke.sh] OK — M-v0.0.2-b smoke test passed"
+echo "[smoke.sh] OK — M-v0.0.2-c smoke test passed (17 endpoint cover)"

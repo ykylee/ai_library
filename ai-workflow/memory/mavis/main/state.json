@@ -1,0 +1,29 @@
+{
+  "session_id": "mvs_942a585fca3e4ca0952a1a8bb4f54c90",
+  "branch": "main",
+  "started_at": "2026-06-27T22:03:47+09:00",
+  "milestone": "M-v0.0.2-c",
+  "status": "in_progress",
+  "tier": "사외",
+  "todos": [
+    {"id": 1, "task": "Session handoff 구조 세팅", "status": "in_progress"},
+    {"id": 2, "task": "storage/raw.py + storage/audit.py 신규", "status": "pending"},
+    {"id": 3, "task": "api/v1/concepts.py", "status": "pending"},
+    {"id": 4, "task": "api/v1/raw.py", "status": "pending"},
+    {"id": 5, "task": "api/v1/audit.py", "status": "pending"},
+    {"id": 6, "task": "api/v1/graph.py", "status": "pending"},
+    {"id": 7, "task": "api/v1/monitoring.py", "status": "pending"},
+    {"id": 8, "task": "api/v1/__init__.py aggregator", "status": "pending"},
+    {"id": 9, "task": "신규 test 5 file", "status": "pending"},
+    {"id": 10, "task": "smoke 3종 교체", "status": "pending"},
+    {"id": 11, "task": "전체 pytest + smoke 검증", "status": "pending"},
+    {"id": 12, "task": "Commit + push", "status": "pending"}
+  ],
+  "cumulative_metrics": {
+    "endpoint_count": 9,
+    "endpoint_target": 17,
+    "pytest_pass": 40,
+    "smoke_pass": 8
+  },
+  "adrs": ["0001-founding-charter", "0002-okf-adoption"]
+}
