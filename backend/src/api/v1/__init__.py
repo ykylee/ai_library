@@ -9,19 +9,32 @@
 - audit.py     : GET /api/v1/audit  (M-v0.0.2-c)
 - graph.py     : GET /api/v1/graph + POST /reindex  (M-v0.0.2-c)
 - monitoring.py: GET /api/v1/monitoring/alerts  (M-v0.0.2-c)
+- enrich.py    : POST /enrich + /enrich/{job_id}/apply + GET /jobs + /metrics + /{job_id}  (M-v0.0.3-a)
 
 M-v0.0.2-a: 본 aggregator + health.py
 M-v0.0.2-b: + ingest.py + bundles.py
 M-v0.0.2-c: + concepts.py + raw.py + audit.py + graph.py + monitoring.py
             (총 17 endpoint 등록 완료 = M-v0.0.2 milestone done)
+M-v0.0.3-a: + enrich.py (sdk mode + 3-mode confirm + 5 metrics, +4 endpoint)
+            (총 21 endpoint)
 """
 from __future__ import annotations
 
 from fastapi import APIRouter
 
-from . import audit, bundles, concepts, graph, health, ingest, monitoring, raw
+from . import (
+    audit,
+    bundles,
+    concepts,
+    enrich,
+    graph,
+    health,
+    ingest,
+    monitoring,
+    raw,
+)
 
-# aggregator router (M-v0.0.2-a + b + c)
+# aggregator router (M-v0.0.2-a + b + c + M-v0.0.3-a)
 api_v1_router = APIRouter(prefix="/api/v1")
 api_v1_router.include_router(health.protected_router)
 api_v1_router.include_router(ingest.router)
@@ -31,6 +44,7 @@ api_v1_router.include_router(raw.router)
 api_v1_router.include_router(audit.router)
 api_v1_router.include_router(graph.router)
 api_v1_router.include_router(monitoring.router)
+api_v1_router.include_router(enrich.router)
 
 
 __all__ = ["api_v1_router"]

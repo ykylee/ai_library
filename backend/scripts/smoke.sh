@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# ai_library backend smoke test (M-v0.0.2-c)
-# 8 smoke test (standalone 운영 검증, 17 endpoint cover)
+# ai_library backend smoke test (M-v0.0.3-a)
+# 9 smoke test (standalone 운영 검증, 21 endpoint cover)
 #
 # auto-starts FastAPI dev server in background (if not running), runs checks, kills at end.
 set -euo pipefail
@@ -50,7 +50,7 @@ trap cleanup EXIT
 check() {
     local name="$1"
     local cmd="$2"
-    echo -n "  [$((PASS+FAIL+1))/8] $name: "
+    echo -n "  [$((PASS+FAIL+1))/9] $name: "
     if eval "$cmd" >/dev/null 2>&1; then
         echo "OK"
         PASS=$((PASS+1))
@@ -86,12 +86,15 @@ check "var/ subdirs present" "test -d var/raw && test -d var/concepts && test -d
 # 8) pyproject.toml 의 metadata 검증
 check "pyproject.toml metadata" "python ${SCRIPT_DIR}/smoke_pyproject.py"
 
+# 9) M-v0.0.3-a: enrich dry-run + metrics (SDK 미설치 graceful skip 검증)
+check "enrich dry-run + metrics" "python ${SCRIPT_DIR}/smoke_enrich.py"
+
 echo ""
-echo "[smoke.sh] result: $PASS pass / $FAIL fail (out of 8)"
+echo "[smoke.sh] result: $PASS pass / $FAIL fail (out of 9)"
 
 if [[ $FAIL -gt 0 ]]; then
     echo "[smoke.sh] FAIL — see above"
     exit 1
 fi
 
-echo "[smoke.sh] OK — M-v0.0.2-c smoke test passed (17 endpoint cover)"
+echo "[smoke.sh] OK — M-v0.0.3-a smoke test passed (21 endpoint cover)"
